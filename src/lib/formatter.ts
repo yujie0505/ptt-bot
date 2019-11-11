@@ -1,21 +1,19 @@
 import { HtmlFieldTarget } from "@/types/formats";
 
-export const htmlToCsv = (html: string, targets: HtmlFieldTarget, flags: string = "") => {
-  let regex_string = "";
+export class Formatter {
+  private pattern: RegExp | null = null;
 
-  for (let target = targets; true; ) {
-    regex_string += `[\\s\\S]*?<${target.tag}`;
-    regex_string += target.meta.class ? `.*?class="${target.meta.class}"` : "";
-    regex_string += target.captureMeta ? `.*?${target.captureMeta}="([\\s\\S]+?)"` : "";
-    regex_string += ".*?>";
-    regex_string += target.captureContent ? `([\\s\\S]+?)</${target.tag}>` : "";
+  constructor(targets: HtmlFieldTarget, flags: string = "g") {
+    let regex_string = "";
 
-    if (target.nestedFields) {
-      target = target.nestedFields;
-    } else {
-      break;
+    for (let target: HtmlFieldTarget | undefined = targets; target; target = target.nestedFields) {
+      regex_string += `[\\s\\S]*?<${target.tag}`;
+      regex_string += target.meta.class ? `.*?class="${target.meta.class}"` : "";
+      regex_string += target.captureMeta ? `.*?${target.captureMeta}="([\\s\\S]+?)"` : "";
+      regex_string += ".*?>";
+      regex_string += target.captureContent ? `([\\s\\S]+?)</${target.tag}>` : "";
     }
-  }
 
-  const regex = new RegExp(regex_string, flags);
-};
+    this.pattern = new RegExp(regex_string, flags);
+  }
+}
