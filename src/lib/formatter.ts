@@ -1,7 +1,7 @@
 import { HtmlFieldTarget } from "@/types/formats";
 
 export class Formatter {
-  private pattern: RegExp | null = null;
+  private pattern: RegExp;
 
   constructor(targets: HtmlFieldTarget, flags: string = "g") {
     let regex_string = "";
@@ -15,5 +15,15 @@ export class Formatter {
     }
 
     this.pattern = new RegExp(regex_string, flags);
+  }
+
+  public format(raw_data: string): string[][] {
+    const matched: string[][] = [];
+
+    for (let match; (match = this.pattern.exec(raw_data)); ) {
+      matched.push(match.slice(1));
+    }
+
+    return matched;
   }
 }
