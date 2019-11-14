@@ -15,10 +15,11 @@ export class CrawlerService {
     return CrawlerService.instance;
   }
 
-  public getContentInBoard(board_name: string): Promise<string | void> {
+  public getContentInBoard(board_name: string, page?: number): Promise<string | void> {
     return new Promise((resolve, reject) =>
-      request({ url: `${PTT_URL}/${BOARDS[board_name]}`, headers: this.headers }, (err, _, body) =>
-        err ? reject(err) : resolve(body),
+      request(
+        { url: `${PTT_URL}/${BOARDS[board_name]}/index${page || ""}.html`, headers: this.headers },
+        (err, _, body) => (err ? reject(err) : resolve(body)),
       ),
     );
   }
