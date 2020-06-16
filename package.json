@@ -9,14 +9,16 @@
     "test": "npx ts-node -r tsconfig-paths/register src/index.ts"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.32",
     "@types/node": "^12.12.6",
+    "@types/request": "^2.48.5",
     "ts-node": "^8.4.1",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@types/request": "^2.48.3",
+    "bluebird": "^3.7.2",
     "request": "^2.88.0"
   }
 }
